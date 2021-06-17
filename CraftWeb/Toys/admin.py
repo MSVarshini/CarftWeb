@@ -3,6 +3,16 @@ from .models import *
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
+# class CartAdmin(admin.ModelAdmin):
+# 	class Meta:
+# 		model = Cart
+# admin.site.register(Cart,CartAdmin)
+
+admin.site.register(Product)
+admin.site.register(Wishlist)
+admin.site.register(Cart)
+
+			
 class MyUserAdmin(BaseUserAdmin):
 	list_display=(
 		'Email',
@@ -34,17 +44,3 @@ class MyUserAdmin(BaseUserAdmin):
 	ordering=('Email',)
 admin.site.register(Customer,MyUserAdmin)
 
-# class ItemAdmin(admin.ModelAdmin):
-# 	prepopulated_fields = {'slug' : {'title'}}
-# 	list_dis=[
-# 		'title',
-# 		'Image',
-# 		'Price',
-# 		'Category',
-# 		'Description', 
-# 		'Quantity',
-# 	]
-
-# admin.site.register(Item)
-# admin.site.register(Order)
-# admin.site.register(OrderItem)

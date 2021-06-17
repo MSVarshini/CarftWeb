@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                             <a href="{% url 'requestProduct'%}" class="nav-item nav-link">Request Product</a>
-                            <a href="{% url 'paintings' %}" class="nav-item nav-link">Wishlist</a>
+                            <a href="{% url 'wishlist' %}" class="nav-item nav-link">Wishlist</a>
                             <a href="cart.html" class="nav-item nav-link">Cart</a>
                             <a href="checkout.html" class="nav-item nav-link">Checkout</a>
                             <a href="my-account.html" class="nav-item nav-link">My Account</a>
@@ -76,10 +76,13 @@
         
         
         <!-- Product List Start -->
+        <h3>PRODUCTS LIST</h3>
         <div class="product-view">
             <div class="container-fluid">
                 <div class="row"> 
+
                 {% for hotel in Images %}
+                
                 <div class="col-md-3">
                                 <div class="product-item">
                                     <div class="product-title">
@@ -98,7 +101,8 @@
                                         </a>
                                         <div class="product-action">
                                             <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
+
+                                            <a href="{% url 'wishlistAdd' hotel.id %}"><i class="fa fa-heart"></i></a>
                                             <a href="#"><i class="fa fa-search"></i></a>
                                         </div>
                                     </div>

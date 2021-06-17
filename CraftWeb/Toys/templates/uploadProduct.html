@@ -120,9 +120,16 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6"> 
-                    <form method = "post"  enctype="multipart/form-data">
+                    <form action="{% url 'image_upload' %}" method = "post"  enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {{error}}
+        {% for error in ProductForm.errors %}
+                                
+                                <p style="color: red;">Enter Valid {{error}} <br> </p>
+                                <br>
+                            
+                                {%endfor%}
         <button class="btn">Upload</button>
         <br>
         <br>

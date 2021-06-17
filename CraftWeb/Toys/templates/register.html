@@ -93,39 +93,9 @@
                     <div class="col-lg-6">  
                     <form action="{% url 'register' %}" method="POST" class="">
                     {% csrf_token %}  
-                    
                     <h3 style="font-style: bold">REGISTER</h3>
-                        <div class="register-form">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p>{{register_form.FirstName.label}}</p>
-                                    {{register_form.FirstName}}
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.LastName.label}}</p>
-                                    {{register_form.LastName}}
-                                    <!-- <input class="form-control" type="text" placeholder="Last Name" name="LastName"> -->
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.Email.label}}</p>
-                                    {{register_form.Email}}
-                                    <!-- <input class="form-control" type="text" placeholder="E-mail" name = "Email"> -->
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.Mobile.label}}</p>
-                                    {{register_form.Mobile}}
-                                    <!-- <input class="form-control" type="text" placeholder="Mobile No" name="Mobile"> -->
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.password1.label}}</p>
-                                    {{register_form.password1}}
-                                   <!--  <input class="form-control" type="password" placeholder="Password" > -->
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.password2.label}}</p>
-                                    {{register_form.password1}}
-                                    <!-- <input class="form-control" type="password"  placeholder="Confirm Password"> -->
-                                </div>
+                    {{register_form}}
+                   
                                 {% for error in register_form.errors %}
                                 
                                 <p style="color: red;">Enter Valid {{error}} <br> </p>
@@ -135,15 +105,12 @@
                                 <div class="col-md-12">
                                     <button class="btn">Register</button>
                                 </div>
-                            </div>
-                        </div>
                     </form>
                     </div>
                     
                 </div>
             </div>
         </div>
-        <!-- Login End -->
         
        
         <!-- Back to Top -->
@@ -159,3 +126,39 @@
         <script src="js/main.js"></script>
     </body>
 </html>
+
+
+
+
+
+                        <!-- <div class="register-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>{{register_form.FirstName.label}}</p>
+                                    {{register_form.FirstName}}
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{register_form.LastName.label}}</p>
+                                    {{register_form.LastName}}
+                                     <input class="form-control" type="text" placeholder="Last Name" name="LastName"> -->
+                                <!-- </div>
+                                <div class="col-md-6">
+                                    <p>{{register_form.Email.label}}</p>
+                                    {{register_form.Email}}
+                                    <input class="form-control" type="text" placeholder="E-mail" name = "Email">
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{register_form.Mobile.label}}</p>
+                                    {{register_form.Mobile}} -->
+                                    <!-- <input class="form-control" type="text" placeholder="Mobile No" name="Mobile"> -->
+                                <!-- </div>
+                                <div class="col-md-6">
+                                    <p>{{register_form.password1.label}}</p>
+                                    
+                                    <input class="form-control" type="password" placeholder="Password" >
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{register_form.password2.label}}</p>
+                                    
+                                    <input class="form-control" type="password"  placeholder="Confirm Password">
+                                </div> -->

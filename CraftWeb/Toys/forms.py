@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django import forms
-
+from django.forms import ModelForm
 class CustomerRegistrationForm(UserCreationForm):
     password1 = forms.CharField(label="password",max_length=20,widget=forms.PasswordInput(attrs={'class' : 'form-control','placeholder':"enter password"}))
     password2 = forms.CharField(label="Confirm password",max_length=20,widget=forms.PasswordInput(attrs={'class' : 'form-control','placeholder':"reenter password"}))
@@ -45,7 +45,6 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['Name','Image','Price','Category','Description','Quantity']
         widgets = {
-        #'Image': forms.FileInput(attrs={'class':' btn'}),
         'Name': forms.TextInput(attrs = {'class' : 'form-control' } ),
         'Price' : forms.TextInput(attrs = {'class' : 'form-control'} ),
         'Category' : forms.TextInput(attrs = {'class' : 'form-control'} ),
@@ -56,3 +55,29 @@ class ProductForm(forms.ModelForm):
 #     class Meta:
 #         model = Customer
 #         fields = '__all__'
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = (
+            'Email',
+        )
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields=(
+            'FirstName',
+            'LastName',
+            'Mobile', 
+            )
+class BillingForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields=(
+            'Address',
+            'country',
+            'state',
+            'city',
+            'zipcode' 
+            )
+       

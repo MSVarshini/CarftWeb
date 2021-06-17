@@ -69,32 +69,27 @@ class Product(models.Model):
 	Description = models.TextField()
 	Quantity = models.IntegerField()
 
-# class Item(models.Model):
-# 	title = models.CharField(max_length=200)
-# 	Image = models.ImageField(upload_to='images/',unique=True)
-# 	Price=models.IntegerField()
-# 	Category=models.CharField(max_length=20)
-# 	Description = models.CharField(max_length=50,blank=True)
-# 	Quantity = models.IntegerField()
-# 	slug = models.SlugField()
-# 	def _str_(self):
-# 		return self.title
-
-# class OrderItem(models.Model):
-# 	# user = models.ForeignKey(User,on_delete=models.CASCADE)
-# 	item = models.ForeignKey(Item,on_delete=models.CASCADE)
-# 	ordered = models.BooleanField(default=False)
-# 	quantity = models.IntegerField(default=1)
-
-# 	def _str_(self):
-# 		return f"{self.quantity} of {self.item.title}"
-# class Order(models.Model):
-# 	# user = models.ForeignKey(User,on_delete=models.CASCADE)
-# 	ordered = models.BooleanField(default=False)
-# 	start_date = models.DateTimeField(auto_now_add = True)
-# 	ordered_date = models.DateTimeField()
-
-# 	# def _str_(self):
-# 	# 	return self.user.username
-		
-# 		
+	def __unicode__(self):
+		return self.title
+	def get_price(self):
+		return self.Price
+class Wishlist(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default=None)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    def __str__(self):
+    	return str(self.id)
+class Cart(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default=None)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+    quantity = models.IntegerField(default=1,null=False)
+    total = models.DecimalField(max_digits = 100,decimal_places = 2,default=0.00)
+    def __str__(self):
+    	return str(self.id)
+class Order(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
+	cart = models.ForeignKey(Cart,on_delete=models.CASCADE,blank=True)
+	Address = models.TextField(null=False,max_length=50)
+	country = models.CharField(null=False,max_length=50)
+	city = models.CharField(null=False,max_length=50)
+	state = models.CharField(null=False,max_length=50)
+	zipcode = models.IntegerField(null=False,max_length=50)

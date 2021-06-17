@@ -12,7 +12,7 @@ urlpatterns=[
 	#path('login1/',views.login1,name="login1"),
 	# path('register1/',views.register1,name="register1"),
 	path('requestProduct/',views.requestProduct,name="requestProduct"),
-	path('cart/',views.cart,name="cart"),
+	#path('cart/',views.cart,name="cart"),
 	path('checkout/',views.checkout,name="checkout"),
 	path('contact/',views.contact,name="contact"),
 	path('myAccount/',views.myAccount,name="myAccount"),
@@ -21,10 +21,16 @@ urlpatterns=[
 	path('paintings/',views.paintings,name="paintings"),
 	path('kondapalli/',views.kondapalli,name="kondapalli"),
 	path('bottleArts/',views.bottleArts,name="bottleArts"),
-	path('wishlist/',views.wishlist,name="wishlist"),
+	path('wishlist/',views.wishlist,name='wishlist'),
+	path('wishlistDel/<int:id>',views.wishlistDel,name="wishlistDel"),
+	path('wishlistAdd/<int:id>',views.wishlistAdd,name="wishlistAdd"),
+	path('cart/',views.cart,name='cart'),
+	path('cartDel/<int:id>',views.cartDel,name="cartDel"),
+	path('cartAdd/<int:id>',views.cartAdd,name="cartAdd"),
 	path('image_upload/', views.hotel_image_view, name = 'image_upload'),
     path('success/', views.success, name = 'success'),
-    path('Edit/', views.Edit, name = 'Edit'),
+    path('Edit/', views.edit_profile, name = 'Edit'),
+    path('remove/<int:id>', views.remove, name = 'remove'),
 
 ]
 urlpatterns += staticfiles_urlpatterns()

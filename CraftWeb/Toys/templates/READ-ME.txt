@@ -9,3 +9,62 @@
   =>  Author Website   : https://htmlcodex.com
 
   =>  About HTML Codex : HTML Codex is one of the top creators and publishers of Free HTML templates, HTML landing pages, HTML email templates and HTML snippets in the world. Read more at ( https://htmlcodex.com/about-us )
+
+  
+    		#<a class="primary-btn" href="/wishlist_item/deleteproduct/{{item.product.id}}" onclick="return confirm('Are you sure')">Delete</a>
+# class OrderItem(models.Model):
+# 	# user = models.ForeignKey(User,on_delete=models.CASCADE)
+# 	product = models.OneToOneField(Product,on_delete=models.SET_NULL,null=True)
+# 	item = models.ForeignKey(Item,on_delete=models.CASCADE)
+# 	is_ordered = models.BooleanField(default=False)
+# 	date_added = models.DateTimeField(auto_now = True)
+# 	quantity = models.IntegerField(default=1)
+
+# 	def _str_(self):
+# 		return f"{self.quantity} of {self.item.title}"
+# class Item(models.Model):
+# 	title = models.CharField(max_length=200)
+# 	Image = models.ImageField(upload_to='images/',unique=True)
+# 	Price=models.IntegerField()
+# 	Category=models.CharField(max_length=20)
+# 	Description = models.CharField(max_length=50,blank=True)
+# 	Quantity = models.IntegerField()
+# 	slug = models.SlugField()
+# 	def _str_(self):
+# 		return self.title
+
+# class OrderItem(models.Model):
+# 	# user = models.ForeignKey(User,on_delete=models.CASCADE)
+# 	item = models.ForeignKey(Item,on_delete=models.CASCADE)
+# 	ordered = models.BooleanField(default=False)
+# 	quantity = models.IntegerField(default=1)
+
+# 	def _str_(self):
+# 		return f"{self.quantity} of {self.item.title}"
+# class Order(models.Model):
+# 	# user = models.ForeignKey(User,on_delete=models.CASCADE)
+# 	ordered = models.BooleanField(default=False)
+# 	start_date = models.DateTimeField(auto_now_add = True)
+# 	ordered_date = models.DateTimeField()
+
+# 	# def _str_(self):
+# 	# 	return self.user.username
+		
+# 		
+# class CartItem(models.Model):
+# 	product = models.ForeignKey(Product,on_delete=models.CASCADE)
+# 	quantity = models.IntegerField(default=1)
+
+# 	def __unicode(self):
+# 		return self.product.title
+
+# class Cart(models.Model):
+# 	items = models.ManyToManyField(CartItem,null=True,blank=True)
+# 	products = models.ManyToManyField(Product,null=True,blank=True)
+# 	total = models.DecimalField(max_digits = 100,decimal_places = 2,default=0.00)
+# 	timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
+# 	updated = models.DateTimeField(auto_now_add=False,auto_now=True)
+# 	active = models.BooleanField(default=True)
+
+# 	def __unicode__(self):
+# 		return "Card id is:%s"%(self.id)
