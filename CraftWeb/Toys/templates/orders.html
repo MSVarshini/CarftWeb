@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>E Store - eCommerce HTML Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="eCommerce HTML Template Free Download" name="keywords">
+        <meta content="eCommerce HTML Template Free Download" name="description">
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="{% static 'lib/slick/slick.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/slick/slick-theme.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        {% load static %}
+        <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css">
+           </head>
+    </head>
+
+    <body>   
+    <!-- Top bar Start -->
+        <div class="top-bar">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <i class="fa fa-envelope"></i>
+                        svecw@email.com
+                    </div>
+                    <div class="col-sm-6">
+                        <i class="fa fa-phone-alt"></i>
+                        +012-345-6789
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top bar End -->     
+        <div class="nav">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                    <a href="#" class="navbar-brand">MENU</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse" style="padding-top: 7px;padding-bottom: 7px">
+                        <div class="navbar-nav mr-auto" >
+                            <a href="{% url 'home'%}" class="nav-item nav-link active">Home</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
+                                <div class="dropdown-menu">
+                                    <a href="{% url 'paintings'%}" class="dropdown-item">Paintings</a>
+                                    <a href="{% url 'kondapalli'%}" class="dropdown-item">Kondapalli Toys</a>
+                                    <a href="{% url 'bottleArts'%}" class="dropdown-item">Bottle Paintings</a>
+                                </div>
+                            </div>
+                            {% if ad is False %}
+                            <a href="{% url 'wishlist'%}" class="nav-item nav-link">Wishlist</a>
+                            <a href="{% url 'cart'%}" class="nav-item nav-link">cart</a>
+                            <a href="{% url 'checkout'%}" class="nav-item nav-link">Checkout</a>
+                            <a href="{% url 'Edit'%}" class="nav-item nav-link">Edit-Profile</a>
+                            <a href="{% url 'contact'%}" class="nav-item nav-link">Contact</a>
+                            <a href="{% url 'orders'%}" class="nav-item nav-link">My-Orders</a>
+                            <a href="{% url 'requestProduct'%}" class="nav-item nav-link">RequestProduct</a>
+                            {%endif%}
+
+                            {% if ad is True %}
+                                <a href="{% url 'image_upload'%}" class="nav-item nav-link">Add-Product</a>
+                                <a href="{% url 'orders'%}" class="nav-item nav-link">Orders</a>
+                                <a href="{% url 'requests'%}" class="nav-item nav-link">Requests</a>
+                            {%endif%}
+                            
+                        </div>
+                        <div class="navbar-nav ml-auto">
+                            <a href="{% url 'logout'%}" style="padding-left: 200px" class="nav-item nav-link">Logout</a>
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <br>
+        <br>
+        <form action="{% url 'getProductById' %}" method="POST">
+            {% csrf_token %}
+        <div class="bottom-bar">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    
+                    <div style="padding-left: 450px" class="col-md-8">
+                        <div class="search">
+                            <input type="text" name="prodId" placeholder="Search by Id">
+
+                           <button onclick="myFunction()"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Bottom Bar End --> 
+                                    
+        
+        
+        <!-- Cart Start -->
+        <h3 style="text-align: center;font-size: 40px;color:  #FF6F61">ORDERS</h3>
+        <div class="cart-page">
+            <div class="container-fluid">
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+                        <div class="cart-page-inner">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Adress</th>
+                                            <th>Products(id)=>Quantity</th>
+                                            <th>Total</th>
+                                            {% if ad is True %}
+                                            <th>Remove</th>
+                                            {% endif%}
+                                            {% if ad is False %}
+                                            <th>Cancel</th>
+                                            {% endif%}
+                                        </tr>
+                                    </thead>
+                                    <tbody class="align-middle">
+                                        {% for prod in data %}
+
+                                        <tr>
+                                            <td>
+                                                    <p> {{prod.customer.Email}} </p>
+                                            </td>
+                                            <td> {{prod.Address}},{{prod.city}},{{prod.state}},{{prod.country}} </td>
+                                            <td type="text" rows="5">{{prod.productscode}}</td>
+                                            <td> {{prod.total}} </td>
+                                            <td><a href="{% url 'removeOrder' prod.id %}"><button><i class="fa fa-trash"></i></button></a></td>
+                                        </tr> 
+                                                                               {%endfor%}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- Cart End -->
+        
+       
+        
+        <!-- Back to Top -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'lib/slick/slick.min.js' %}"></script>
+        
+        <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+
+    </body>
+</html>

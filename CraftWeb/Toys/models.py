@@ -83,13 +83,20 @@ class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=1,null=False)
     total = models.DecimalField(max_digits = 100,decimal_places = 2,default=0.00)
+    flag = models.BooleanField(default=True)
     def __str__(self):
     	return str(self.id)
 class Order(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
-	cart = models.ForeignKey(Cart,on_delete=models.CASCADE,blank=True)
 	Address = models.TextField(null=False,max_length=50)
 	country = models.CharField(null=False,max_length=50)
-	city = models.CharField(null=False,max_length=50)
 	state = models.CharField(null=False,max_length=50)
-	zipcode = models.IntegerField(null=False,max_length=50)
+	city = models.CharField(null=False,max_length=50)
+	zipcode = models.IntegerField(null=False)
+	productscode = models.TextField(max_length=100,null=False)
+	total = models.DecimalField(max_digits = 100,decimal_places = 2,default=0.00)
+class Request(models.Model):
+	customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+	ProductType = models.CharField(max_length=20)
+	Description = models.TextField(null=False,max_length=200)
+		

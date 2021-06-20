@@ -7,24 +7,44 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
-
+from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMessage
+from CraftWeb import settings
+import smtplib
+from email.mime.text import MIMEText
 
 # Create your views here.
 def home(req):
+	ad=False
 	if req.user.is_authenticated:
-		return render(req,'index.html')
+		if req.user.is_admin:
+			ad = True
+		data = Product.objects.all()[:10]
+		return render(req,'index.html',{'data':data,'ad':ad})
 	return redirect('login')
-def requestProduct(req):
-	if req.user.is_authenticated:
-		return render(req,'requestProduct.html')
-	return redirect('login')
+
+def requestProduct(request):
+	context={}
+	ad=False
+	if req.user.is_admin:
+			ad = True
+	if request.user.is_authenticated:
+		if request.method=="POST":
+			prod = request.POST['ProductType']
+			desc = request.POST['Description']
+			data = Request(customer=request.user,ProductType=prod,Description=desc);
+			data.save()
+			return redirect('/Toys/requestProduct/')
+		return render(request,'requestProduct.html',{'ad':ad})
+	return redirect('/Toys/login/')
+
 def register(req):
 	context={}
 	if req.method=="POST":
 		form=CustomerRegistrationForm(req.POST)
 		if form.is_valid():
 			form.save()
-			messages.success(req,"RECORD SAVED")
 			return redirect('login')
 		context['register_form'] = form
 	else:
@@ -41,7 +61,8 @@ def login_view(req):
 			user = authenticate(req,Email=Email,password=password)
 			if user is not None:
 				login(req,user)
-				return redirect('home')
+				msg = "Successfully logged-In"
+				return render(req,'index.html',{'msg':msg,'ad':False})
 		else:
 			form=CustomerLoginForm()
 			context['login_form']=form
@@ -54,66 +75,88 @@ def logout_view(req):
 	if req.user.is_authenticated:
 		logout(req)
 	return redirect('login')
-# def cart(req):
-# 	if req.user.is_authenticated:
-# 		return render(req,'cart.html')
-# 	return redirect('login')
 def checkout(req):
-	if req.user.is_authenticated and req.method=='POST':
-		form = BillingForm(req.POST)
-		if form.is_valid():
-			data=Cart.objects.filter(customer=req.user)
-			# order = Order(customer=req.user,cart=)
-			sum1 = Cart.objects.filter(customer=req.user).aggregate(Sum('total'))
-		return render(req,'checkout.html',{'form':form,'sum1':sum1['total__sum'],'sum2':sum1['total__sum']+100})
+	context=""
+	if req.user.is_authenticated:
+		cart = Cart.objects.filter(customer=req.user)
+		if not cart:
+			sum1=0
+			sum2=0
+			return render(req,'cart.html',{'sum1':sum1,'sum2':sum1})
+		sum1 = Cart.objects.filter(customer=req.user).aggregate(Sum('total'))
+		if req.method=="POST":
+			form = BillingForm(req.POST)
+			cart = Cart.objects.filter(customer=req.user)
+			tot = sum1['total__sum']
+			stri=""
+			for k in cart:
+				cart2 = Cart.objects.get(customer=req.user,product=k.product)
+				quan = cart2.quantity
+				stri = stri+str(k.product.Name)+ "("+str(k.product.id)+ ")=>" + str(quan)+ '\n'+','
+			if form.is_valid():
+				order = Order(customer=req.user,Address=req.POST['Address'],country=req.POST['country'],state=req.POST['state'],city=req.POST['city'],zipcode=req.POST['zipcode'],productscode=stri,total=tot)
+				order.save()
+				Cart.objects.filter(customer=req.user).delete()
+				msg = "Products Ordered Successfully"
+				return render(req,'checkout.html',{'msg':msg,'ad':False})
+			else:
+				context = "Please fill all the details"
+		form = BillingForm()
+		return render(req,'checkout.html',{'context':context,'form':form,'sum1':sum1['total__sum'],'sum2':sum1['total__sum']+100,'ad':False})
 	return redirect('login')
 	
 def contact(req):
-	return render(req,'contact.html')
-def myAccount(req):
-	return render(req,'my-account.html')
-def productDetail(req):
+	return render(req,'contact.html',{'ad':False})
+
+def productDetail(req,id):
+	ad=False
+	if req.user.is_admin:
+			ad = True
 	if req.user.is_authenticated:
-		return render(req,'product-detail.html')
+		data=Product.objects.get(id=id);
+		return render(req,'product-detail.html',{'data' : data,'ad':ad})
 	return redirect('login')
 	
 def productList(req):
+	ad=False
+	if req.user.is_admin:
+			ad = True
 	if req.method == 'GET':
 		products = Hotel.objects.all()
-		return render(req, 'prod.html',{'Images' : products})
+		return render(req, 'prod.html',{'Images' : products,'ad':ad})
 def paintings(req):
+	ad=False
+	if req.user.is_admin:
+			ad = True
 	if req.user.is_authenticated and req.method == 'GET':
 		products = Product.objects.filter(Category = "Paintings")
-		print(products)
-		return render(req, 'prod.html',{'Images' : products})
+		return render(req, 'prod.html',{'Images' : products,'ad':ad})
 	return redirect('login')
 def kondapalli(req):
+	ad=False
+	if req.user.is_admin:
+			ad = True
 	if req.user.is_authenticated and req.method == 'GET':
 		products = Product.objects.filter(Category = "Kondapalli")
-		print(products)
-		return render(req, 'prod.html',{'Images' : products})
+		return render(req, 'prod.html',{'Images' : products,'ad':ad})
 	return redirect('login')
 def bottleArts(req):
+	ad=False
+	if req.user.is_admin:
+			ad = True
 	if req.user.is_authenticated and req.method == 'GET':
 		products = Product.objects.filter(Category = "BottleArts")
-		print(products)
-		return render(req, 'prod.html',{'Images' : products})
+		return render(req, 'prod.html',{'Images' : products,'ad':ad})
 	return redirect('login')
 def wishlist(req):
 	if req.user.is_authenticated:
 		data=Wishlist.objects.filter(customer=req.user)
-		print(data)
 		return render(req,'wishlist.html',{'data':data})
 	return redirect('login')
 def wishlistAdd(request, id):
-	print("FWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",request.user.id)
-	print(type(id))
-	#print(Product.objects.get(id=id))
 	wishAdd=Wishlist.objects.filter(customer=request.user, product=Product.objects.get(id=id)).exists()
-	print(wishAdd is None)
 	if not wishAdd:
 		wish = Wishlist(customer = request.user,product=Product.objects.get(id=id))
-		print(wish)
 		wish.save()
 		return redirect('/Toys/wishlist/')
 		messages.success(request, 'Product Remove From Wishlist...')
@@ -121,29 +164,21 @@ def wishlistAdd(request, id):
 def wishlistDel(request, id):
     Wishlist.objects.filter(customer=request.user, product=Product.objects.get(id=id)).delete()
     messages.success(request, 'Product Remove From Wishlist...')
-    return redirect('Toys//wishlist')
-def hotel_image_view(request):
+    return redirect('Toys//wishlist/')
+def product_image_view(request):
 	context={}
 	if request.method == 'POST':
 		form = ProductForm(request.POST, request.FILES)
 		if form.is_valid():
 			form.save()
-			return redirect('success')
+			msg = "Product Added Successfully"
+			return render(request, 'uploadProduct.html', {'form' : form,'msg':msg,'ad':True}) 
 		else:
 			form = ProductForm()
 			context['error'] = 'Enter valid details'
 	else:
 		form = ProductForm()
 	return render(request, 'uploadProduct.html', {'form' : form})  
-def success(request):
-    return HttpResponse('successfully uploaded')
-
-def Edit(req):
-	if req.user.is_authenticated:
-		return render(req , 'EditProfile.html')
-	return redirect('login')
-
-
 def edit_profile(request):
 	context={}
 	if request.method == 'POST':
@@ -155,6 +190,7 @@ def edit_profile(request):
 			custom_form.user = user_form
 			custom_form.save()
 			context['msg'] = "Updated your Profile successfully"
+			context['ad']=False
 			return render(request,'EditProfile.html',context)
 	else:
 		form = EditProfileForm(instance=request.user)
@@ -162,25 +198,24 @@ def edit_profile(request):
 		args = {}
 		args['form'] = form
 		args['profile_form'] = profile_form
+		args['ad']=False
 		return render(request, 'EditProfile.html', args)
 
 def cart(req):
 	if req.user.is_authenticated:
-		data=Cart.objects.filter(customer=req.user)
+		data=Cart.objects.filter(customer=req.user,flag=True)
+		if not data:
+			sum1=0
+			sum2=0
+			return render(req,'cart.html',{'sum1':sum1,'sum2':sum2})
 		sum1 = Cart.objects.filter(customer=req.user).aggregate(Sum('total'))
-		print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK",sum1['total__sum'])
-		return render(req,'cart.html',{'data':data,'sum1':sum1['total__sum'],'sum2':sum1['total__sum']+100})
+		return render(req,'cart.html',{'data':data,'sum1':sum1['total__sum'],'sum2':sum1['total__sum']+100,'ad':False})
 	return redirect('login')
 def cartAdd(request, id):
-	#print("FWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",request.user.id)
-	print(type(id))
-	print(Product.objects.get(id=id))
 	cart_add=Cart.objects.filter(customer=request.user, product=Product.objects.get(id=id))
-	print(cart_add)
 	prod = Product.objects.get(id=id)
 	if not cart_add:
 		wish = Cart(customer = request.user,product=prod,quantity=1,total=prod.Price)
-		print(wish)
 		wish.save()
 		return redirect('/Toys/cart/')
 		messages.success(request, 'Product Added From Cart...')
@@ -195,7 +230,6 @@ def cartDel(request, id):
     cart_del = Cart.objects.get(customer=request.user, product=Product.objects.get(id=id))
     prod = Product.objects.get(id=id)
     quan = (cart_del.quantity)-1
-    print(quan)
     if quan==0:
     	Cart.objects.get(customer=request.user, product=Product.objects.get(id=id)).delete()
     else:
@@ -204,9 +238,39 @@ def cartDel(request, id):
     	c.quantity = quan
     	c.total -= prod.Price
     	c.save()
-    	
     messages.success(request, 'Product Remove From Cart...')
     return redirect('/Toys/cart/')
 def remove(request,id):
 	Cart.objects.get(customer=request.user, product=Product.objects.get(id=id)).delete()
 	return redirect('/Toys/cart/')
+def requests(req):
+	if req.user.is_authenticated:
+		data = Request.objects.all()
+		return render(req,'requests.html',{'data':data})
+	return render(req,'login.html',{'ad':False})
+def success(request):
+    return HttpResponse('successfully uploaded')
+def orders(req):
+	ad=False
+	if req.user.is_admin:
+			ad = True
+	if req.user.Email == "admin@gmail.com":
+		data = Order.objects.all().order_by('-id')
+		return render(req,'orders.html',{'data':data,'ad':ad})
+	if req.user.is_authenticated:
+		data = Order.objects.filter(customer=req.user).order_by('-id')
+		return render(req,'orders.html',{'data':data,'ad':ad})
+def removeOrder(req,id):
+	c = Order.objects.filter(id=id).delete()
+	return redirect('/Toys/orders/')
+def removeRequest(req,id):
+	c = Request.objects.filter(id=id).delete()
+	return redirect('/Toys/requests/')
+def getProductById(req):
+	if req.method == "POST":
+		title = req.POST.get("prodId")
+		print(title)
+		data = Product.objects.get(id=title)
+		if not data:
+			return render(req,'product-detail.html',{'data':data,'ad':Fals})
+	return redirect('/Toys/Orders/')

@@ -11,6 +11,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 admin.site.register(Product)
 admin.site.register(Wishlist)
 admin.site.register(Cart)
+admin.site.register(Order)
+admin.site.register(Request)
 
 			
 class MyUserAdmin(BaseUserAdmin):

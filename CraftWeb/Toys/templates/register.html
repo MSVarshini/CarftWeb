@@ -11,7 +11,7 @@
         <!-- Favicon -->
         <link href="img/favicon.ico" rel="icon">
 
-        <!-- Google Fonts -->
+        <!-- Google Fonts --> 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap" rel="stylesheet">
 
         <!-- CSS Libraries -->
@@ -26,9 +26,23 @@
     </head>
 
     <body>
-        
-        
-       <div class="nav">
+      <!-- Top bar Start -->
+        <div class="top-bar">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <i class="fa fa-envelope"></i>
+                        svecw@email.com
+                    </div>
+                    <div class="col-sm-6">
+                        <i class="fa fa-phone-alt"></i>
+                        +012-345-6789
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Top bar End -->     
+        <div class="nav">
             <div class="container-fluid">
                 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
                     <a href="#" class="navbar-brand">MENU</a>
@@ -36,8 +50,8 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto">
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse" style="padding-top: 7px;padding-bottom: 7px">
+                        <div class="navbar-nav mr-auto" >
                             <a href="{% url 'home'%}" class="nav-item nav-link active">Home</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
@@ -47,53 +61,38 @@
                                     <a href="{% url 'bottleArts'%}" class="dropdown-item">Bottle Paintings</a>
                                 </div>
                             </div>
-                            <!-- <a href="product-list.html" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a> -->
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
+                            <a href="{% url 'wishlist'%}" class="nav-item nav-link">Wishlist</a>
+                            <a href="{% url 'cart'%}" class="nav-item nav-link">cart</a>
+                            <a href="{% url 'checkout'%}" class="nav-item nav-link">Checkout</a>
+                            <a href="{% url 'contact'%}" class="nav-item nav-link">Contact Us</a>
+                            <a href="{% url 'requestProduct'%}" class="nav-item nav-link">RequestProduct</a>
+                            
+
+                            {% if req.user.is_admin%}
+                                <a href="{% url 'image_upload'%}" class="nav-item nav-link">Upload-Product</a>
+                            {%endif%}
                             
                         </div>
                         <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                                <div class="dropdown-menu">
-                                    <a href="{% url 'login'%}" class="dropdown-item">Login</a>
-                                    <a href="{% url 'register'%}" class="dropdown-item">Register</a>
-                                </div>
+                            <a href="{% url 'logout'%}" style="padding-left: 200px" class="nav-item nav-link">Logout</a>
+                               
+                                
                             </div>
                         </div>
                     </div>
                 </nav>
             </div>
         </div>
-        <br>
-        <br>
-        
-        
-        <!-- Bottom Bar End --> 
-        
-        <!-- Breadcrumb Start -->
-        <div class="breadcrumb-wrap">
-            <div class="container-fluid">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Register</li>
-                </ul>
-            </div>
-        </div>
-        <!-- Breadcrumb End -->
         
         <!-- Login Start -->
 
         <div class="login">
             <div class="container-fluid" >
                 <div class="row">
-                    <div class="col-lg-6">  
-                    <form action="{% url 'register' %}" method="POST" class="">
+                    <div class="col-lg-12">  
+                    <form action="{% url 'register' %}" method="POST" class="" style="padding-left: 300px;padding-right: 300px">
                     {% csrf_token %}  
-                    <h3 style="font-style: bold">REGISTER</h3>
+                    <h3 style="text-align: center;font-size: 40px;color:  #FF6F61">REGISTER</h3>
                     {{register_form}}
                    
                                 {% for error in register_form.errors %}
@@ -102,8 +101,8 @@
                                 <br>
                             
                                 {%endfor%}
-                                <div class="col-md-12">
-                                    <button class="btn">Register</button>
+                                <div class="col-md-12" style="align-items: center;padding-left: 350px;padding-right: 350px">
+                                    <button class="btn" style="align-items: center;padding-left: 45px;padding-right: 45px">Register</button>
                                 </div>
                     </form>
                     </div>
@@ -119,46 +118,11 @@
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/slick/slick.min.js"></script>
+        <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'lib/slick/slick.min.js' %}"></script>
         
         <!-- Template Javascript -->
-        <script src="js/main.js"></script>
+        <script src="{% static 'js/main.js' %}"></script>
     </body>
 </html>
 
-
-
-
-
-                        <!-- <div class="register-form">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p>{{register_form.FirstName.label}}</p>
-                                    {{register_form.FirstName}}
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.LastName.label}}</p>
-                                    {{register_form.LastName}}
-                                     <input class="form-control" type="text" placeholder="Last Name" name="LastName"> -->
-                                <!-- </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.Email.label}}</p>
-                                    {{register_form.Email}}
-                                    <input class="form-control" type="text" placeholder="E-mail" name = "Email">
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.Mobile.label}}</p>
-                                    {{register_form.Mobile}} -->
-                                    <!-- <input class="form-control" type="text" placeholder="Mobile No" name="Mobile"> -->
-                                <!-- </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.password1.label}}</p>
-                                    
-                                    <input class="form-control" type="password" placeholder="Password" >
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{register_form.password2.label}}</p>
-                                    
-                                    <input class="form-control" type="password"  placeholder="Confirm Password">
-                                </div> -->

@@ -80,4 +80,22 @@ class BillingForm(forms.ModelForm):
             'city',
             'zipcode' 
             )
-       
+        widgets = {
+        'Address': forms.TextInput(attrs = {'class' : 'form-control','placeholder':"Address"} ),
+        'country' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"country"}),
+        'state' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"state"}),
+        'city' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"city"} ),
+        'zipcode' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"zipcode"} ),
+
+        }
+class RequestForm(forms.ModelForm):
+    class Meta:
+        model=Request
+        fields=(
+            'ProductType',
+            'Description',
+        )            
+        widgets = {
+        'ProductType': forms.TextInput(attrs = {'class' : 'form-control','placeholder':"Type"} ),
+        'Description' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"Description"}),
+        }
