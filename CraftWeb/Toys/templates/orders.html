@@ -110,11 +110,15 @@
             </div>
         </div>
         <!-- Bottom Bar End --> 
-                                    
+                 {% if msg %}
+                                        <div class="alert alert-success container" role="alert" id="success-alert">{{msg}}<button type="button" class="close" data-dismiss="alert">x</button>
+</div>
+                                    {%endif%}                   
         
         
         <!-- Cart Start -->
         <h3 style="text-align: center;font-size: 40px;color:  #FF6F61">ORDERS</h3>
+        
         <div class="cart-page">
             <div class="container-fluid">
                 <div class="row">

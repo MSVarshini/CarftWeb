@@ -17,10 +17,6 @@ class CustomerRegistrationForm(UserCreationForm):
         'LastName' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"last name"}),
         'Mobile' : forms.TextInput(attrs = {'class' : 'form-control','placeholder':"mobile"} )
         }
-
-       
-
-
 class CustomerLoginForm(forms.ModelForm):
     password = forms.CharField(label="password",max_length=20,widget=forms.PasswordInput(attrs={'class' : 'form-control','placeholder':"enter password"}))
     class Meta:
@@ -35,11 +31,7 @@ class CustomerLoginForm(forms.ModelForm):
             password = self.cleaned_data['password']
             if not authenticate(Email=Email,password=password):
                 raise forms.ValidationError("invalid credentials")
-class HotelForm(forms.ModelForm):
-  
-    class Meta:
-        model = Hotel
-        fields = ['name', 'hotel_Main_Img']
+
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -51,10 +43,7 @@ class ProductForm(forms.ModelForm):
         'Description' : forms.TextInput(attrs = {'class' : 'form-control'} ),
         'Quantity' : forms.TextInput(attrs = {'class' : 'form-control'} ),
         }
-# class CreateUserForm(UserCreationForm):
-#     class Meta:
-#         model = Customer
-#         fields = '__all__'
+
 
 class EditProfileForm(forms.ModelForm):
     class Meta:

@@ -1,7 +1,6 @@
 from django.db import models
-#from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
-# Create your models here.
+
 
 CATEGORY_CHOICES = (
 		('Kondapalli','Kondapalli'),
@@ -58,9 +57,7 @@ class Customer(AbstractBaseUser):
 		return True
 	def has_module_perms(self,app_label):
 		return True
-class Hotel(models.Model):
-    name = models.CharField(max_length=50)
-    hotel_Main_Img = models.ImageField(upload_to='images/')
+
 class Product(models.Model):
 	Name=models.CharField(max_length=20,unique=True)
 	Image = models.ImageField(upload_to='images/',unique=True)

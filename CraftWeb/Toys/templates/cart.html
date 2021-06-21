@@ -95,8 +95,13 @@
                 </ul>
             </div>
         </div>
+        <br>
         <!-- Breadcrumb End -->
         
+        {%if msg %}
+                                        <div class="alert alert-success container" role="alert" id="success-alert">{{msg}}<button type="button" class="close" data-dismiss="alert">x</button>
+</div>
+                                    {%endif%}
         <!-- Cart Start -->
         <div class="cart-page">
             <div class="container-fluid">
@@ -107,6 +112,7 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead class="thead-dark">
+                                        {%if not msg%}
                                         <tr>
                                             <th>Product</th>
                                             <th>Price</th>
@@ -114,6 +120,7 @@
                                             <th>Total</th>
                                             <th>Remove</th>
                                         </tr>
+                                        {%endif%}
                                     </thead>
                                     <tbody class="align-middle">
                                         {% for prod in data %}
@@ -129,8 +136,17 @@
                                             <td>
                                                 <div class="qty">
                                                     <a href="{% url 'cartDel' prod.product.id %}"><button class="btn-minus"><i class="fa fa-minus"></i></button></a>
-                                                    <input type="text" value="{{prod.quantity }}">
-                                                    <a href="{% url 'cartAdd' prod.product.id %}"><button class="btn-plus"><i class="fa fa-plus"></i></button></a>
+                                                    {% if prod.quantity >= prod.product.Quantity %}
+                                                    <input type="text" value="{{prod.product.Quantity}}" disabled > 
+                                                        <button type = "button" class="btn-plus" disabled><i class="fa fa-plus" disabled></i></button >
+                                                        
+                                                    {% else %}
+                                                        <input type="text" value="{{prod.quantity}}"> <a href="{% url 'cartAdd' prod.product.id %}">
+                                                        <button class="btn-plus"><i class="fa fa-plus"></i></button >
+                                                        {%endif%}</a>
+                                                    
+
+
                                                 </div>
                                             </td>
                                             <td> {{prod.total}} </td>
