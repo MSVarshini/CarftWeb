@@ -225,7 +225,7 @@
                                 </a>
                                 <div class="product-action">
                                    <a href="{% url 'cartAdd' prod.id %}"><i class="fa fa-cart-plus"></i></a>
-                                    <a href="{%  url 'cartDel' prod.id}%"><i class="fa fa-heart"></i></a>
+                                    <a href="{% url 'wishlistAdd' prod.id%}"><i class="fa fa-heart"></i></a>
                                     <a href="{% url 'productDetail' prod.id %}"><i class="fa fa-search"></i></a>
                                 </div>
                             </div>

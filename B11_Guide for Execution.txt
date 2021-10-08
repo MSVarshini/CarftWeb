@@ -1,0 +1,31 @@
+						    Crafts Ecommerce Website
+
+* For creating the database tables run the following two commands
+	cmd : python manage.py makemigrations
+	      python manage.py migrate
+* For running the Project go to folder inside the project and run the following command
+	cmd: python manage.py runserver
+
+* once the project is running open 'http://127.0.0.1:8000/Toys/home/' in the chrome
+* Then it will redirect you to login page submit the details and if they are valid you will be navigated 
+  to home page.
+
+Customer:
+========
+* You can request for customized products with  the help of buttons in the navbar.
+* you can also view the products according to category and can perform operations like add to cart,add to wishlist 
+  and order products.
+
+Admin:
+======
+for the admin we need to create superuser.The command for creating superUser is
+	cmd: python manage.py createsuperuser
+* Then it will ask for some details of admin.
+* We have already created superuser and the details we gave are
+	Email : admin@gmail.com
+	password : admin
+* By giving these credentials in login you can view admin's home page.
+* The admin can add products to the website,view the requests of customers and also view the orders of customers.
+
+
+

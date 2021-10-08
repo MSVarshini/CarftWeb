@@ -292,9 +292,9 @@ def removeRequest(req,id):
 def getProductById(req):
 	if req.method == "POST":
 		title = req.POST.get("prodId")
-		print(title)
 		data = Product.objects.get(id=title)
-		print(data)
+		if req.user.is_admin:
+			ad=True
 		if data:
-			return render(req,'product-detail.html',{'data':data,'ad':False})
+			return render(req,'product-detail.html',{'data':data,'ad':True})
 	return redirect('/Toys/orders/')
